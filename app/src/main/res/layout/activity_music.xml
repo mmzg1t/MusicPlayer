@@ -13,7 +13,7 @@
         android:layout_width="240dp"
         android:layout_height="240dp"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="15dp"
+        android:layout_margin="26dp"
         android:src="@drawable/music0"/>
     <TextView
         android:id="@+id/song_name"
@@ -50,13 +50,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <Button
-            android:id="@+id/btn_play"
+            android:id="@+id/btn_prev"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:background="@drawable/btn_bg_selector"
-            android:text="播放音乐"/>
+            android:text="上一首"/>
         <Button
             android:id="@+id/btn_pause"
             android:layout_width="0dp"
@@ -66,21 +66,14 @@
             android:background="@drawable/btn_bg_selector"
             android:text="暂停播放"/>
         <Button
-            android:id="@+id/btn_continue_play"
+            android:id="@+id/btn_next"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:background="@drawable/btn_bg_selector"
-            android:text="继续播放"/>
-        <Button
-            android:id="@+id/btn_exit"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_bg_selector"
-            android:text="退出"/>
+            android:text="下一首"/>
+
     </LinearLayout>
 
 </LinearLayout>

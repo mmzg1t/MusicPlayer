@@ -77,8 +77,9 @@ public class MusicService extends Service {
                 // 加载音频文件
                 player.setDataSource(getApplicationContext(), uri);
                 player.prepare();
-                player.start();
                 addTimer();
+                player.start();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

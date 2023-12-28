@@ -34,59 +34,55 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
     private String name;
     private static int position;
     private Intent intent1, intent2;
-
-
+    ImageView iv_music;
+    public int change=0;//记录下标的变化值
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music);
-        Log.i(TAG, "onCreate");
         //获取bundle消息
         intent1 = getIntent();
-        Log.i(TAG, "getintent");
         init(intent1);
     }
 
     private void init(Intent intent) {    //当前位置用点来先显示
-        Log.i(TAG, "init");
         tv_progress = (TextView) findViewById(R.id.tv_progress);
         //总长度
         tv_total = (TextView) findViewById(R.id.tv_total);
         if (tv_progress == null) {
-            Log.i(TAG, "tv_progress is null");
+            Log.d(TAG, "tv_progress is null");
         }
         //进度条样式
         sb = (SeekBar) findViewById(R.id.sb);
         if (sb == null) {
-            Log.i(TAG, "sb is null");
+            Log.d(TAG, "sb is null");
         }
         //歌曲名控件
         name_song = (TextView) findViewById(R.id.song_name);
         //image_cover=findViewById(R.id.iv_music);
         //设置事件监听
-        findViewById(R.id.btn_play).setOnClickListener(this);
-        findViewById(R.id.btn_exit).setOnClickListener(this);
+        findViewById(R.id.btn_prev).setOnClickListener(this);
+        findViewById(R.id.btn_next).setOnClickListener(this);
         //findViewById(R.id.btn_continue_play).setOnClickListener(this);
         findViewById(R.id.btn_pause).setOnClickListener(this);
 
         name = intent.getStringExtra("name");
-        name_song.setText(name);
-        Log.d("Debug3", "position value: " + name);
+        name_song.setText(frag1.name[position]);
+        Log.d("debug", "name value: " + name);
 
         //声明并绑定音乐播放器的iv_music控件
-        ImageView iv_music = findViewById(R.id.iv_music);
+        iv_music = findViewById(R.id.iv_music);
         position = intent.getIntExtra("position", 1);
 
-        Log.d("Debug2", "position value: " + position);
+        Log.d("debug", "position value: " + position);
 
         iv_music.setImageResource(frag1.icons[position]);
-
 
         //创建一个从当前Activity跳转到Service的对象
         intent2 = new Intent(this, MusicService.class);
         //conn= new MyServiceConn();//创建服务连接对象
         bindService(intent2, conn, BIND_AUTO_CREATE);
-        Log.d("isbin1", "isbin1");
+
         //为滑动条添加事件监听
         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             //@RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -194,31 +190,55 @@ public class MusicActivity extends AppCompatActivity implements View.OnClickList
     }
 
     boolean isPlaying = true;
+    int i = position;
+
 
     @Override
     public void onClick(View view) {
-
-        if (view.getId() == R.id.btn_play) {//播放事件
-            musicControl.playStart();
-            animator.start();
-
-        } else if (view.getId() == R.id.btn_pause) {
+        if (view.getId() == R.id.btn_prev) { // 上一首播放事件
+            if((i+change)<1) {
+                change=frag1.name.length-1-i;
+                musicControl.initMusic(i+change);
+                iv_music.setImageResource(frag1.icons[i+change]);
+                name_song.setText(frag1.name[i+change]);
+                //pause.setVisibility(View.VISIBLE);
+                animator.start();
+            }
+            else {
+                change--;
+                iv_music.setImageResource(frag1.icons[i+change]);
+                name_song.setText(frag1.name[i+change]);
+                musicControl.initMusic(i+change);
+                //pause.setVisibility(View.VISIBLE);
+                animator.start();
+            }
+        } else if (view.getId() == R.id.btn_pause) { // 播放/暂停按钮事件
             if (isPlaying) {
                 musicControl.pausePlay();
                 animator.pause();
-                isPlaying = false;
             } else {
                 musicControl.continuePlay();
                 animator.start();
-                isPlaying = true;
             }
-        } else if (view.getId() == R.id.btn_exit) {//退出
-            //private MyServiceConn conn;
-            //记录服务是否解除绑定
-            boolean isUnbind = true;
-            unbind(isUnbind);
-
-            finish();
+            isPlaying = !isPlaying; // 切换播放状态
+        } else if (view.getId() == R.id.btn_next) { // 下一首播放事件
+            if((i+change)==frag1.name.length-1) {//这里musicName.length-1表示的最后一首歌的下标，即歌曲总数-1
+                change=-i;
+                musicControl.initMusic(i+change);
+                iv_music.setImageResource(frag1.icons[i+change]);
+                name_song.setText(frag1.name[i+change]);
+                //pause.setVisibility(View.VISIBLE);
+                animator.start();
+            }
+            else {
+                change++;
+                iv_music.setImageResource(frag1.icons[i+change]);
+                name_song.setText(frag1.name[i+change]);
+                musicControl.initMusic(i+change);
+                //pause.setVisibility(View.VISIBLE);
+                animator.start();
+            }
         }
     }
+
 }

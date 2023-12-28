@@ -70,15 +70,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("touched","touch click name:" + position);
+                Log.d("debug","touch click name:" + position);
                 Toast.makeText(context,"你点击了"+(position+1),Toast.LENGTH_SHORT).show();
-                //mlisterner.onClick(position);
+
                 // 创建 Intent，传递数据并启动新的 Activity
                 Intent intent = new Intent(context, MusicActivity.class);
                 intent.putExtra("name", name[position]);
-                intent.putExtra("image", icons[position]);
-                Intent intent1=new Intent(context, MusicActivity.class);
-                context.startActivity(intent1); // 启动目标Activity
+                intent.putExtra("position", position);
+                Log.d("debug", "image: "+icons[position]);
+                context.startActivity(intent); // 启动目标Activity
             }
         });
     }

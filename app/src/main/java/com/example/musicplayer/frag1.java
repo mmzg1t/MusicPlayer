@@ -34,7 +34,7 @@ public class frag1 extends Fragment {
     private String mParam2;
     // RecycleView要用到的控件
     RecyclerView recyclerView;
-    public String[] name = {"1", "2", "3"};
+    public static String[] name = {"1", "2", "3"};//歌名
     public static int[] icons = {R.drawable.music0, R.drawable.music1, R.drawable.music2};
     MyAdapter myAdapter;
     Context context;
@@ -81,11 +81,10 @@ public class frag1 extends Fragment {
         return view;
     }
 
+    //设置recycleview布局
     private void showRecycleView(){
         context = this.getActivity();
-        //String[] data = {"稻香", "七里香", "青花瓷","安静" , "等你下课",  "星晴", "园游会"};
         myAdapter = new MyAdapter(context,name,icons);
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
